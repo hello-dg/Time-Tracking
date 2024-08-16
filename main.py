@@ -2,7 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, String, Boolean
-from datetime import date, time
+from sqlite3 import Date
+from datetime import date, time, datetime
 
 app = Flask(__name__)
 
@@ -15,33 +16,28 @@ db = SQLAlchemy(app)
 # will need foreign keys later to link up to an employee db, client db, project db, etc
 class Task(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    employee: Mapped[str] = mapped_column(String(200), nullable=True, default="Bob Bookkeeper")
+    group: Mapped[str] = mapped_column(String(200), nullable=True, default="Accounting")
+    role: Mapped[str] = mapped_column(String(200), nullable=True, default="Bookkeeper")
+    pay_type: Mapped[str] = mapped_column(String(200), nullable=True, default="Regular")
     client: Mapped[str] = mapped_column(String(200), nullable=False)
+    department: Mapped[str] = mapped_column(String(200), nullable=True, default="Department")
     project: Mapped[str] = mapped_column(String(200), nullable=False)
+    activity: Mapped[str] = mapped_column(String(200), nullable=True, default="Activity")
     task: Mapped[str] = mapped_column(String(200), nullable=False)
+    tags: Mapped[str] = mapped_column(String(200), nullable=True)
     billable: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    bill_rate: Mapped[int] = mapped_column(Integer, nullable=True, default=0)
+    bill_frequency: Mapped[str] = mapped_column(String(200), nullable=True, default="Bill Frequency")
+    bill_total: Mapped[int] = mapped_column(Integer, nullable=True, default=0)
+    created_date: Mapped[str] = mapped_column(String(25), nullable=True)
+    start_date: Mapped[str] = mapped_column(String(25), nullable=False)
+    start_time: Mapped[str] = mapped_column(String(25), nullable=False)
+    end_date: Mapped[str] = mapped_column(String(25), nullable=True)
+    end_time: Mapped[str] = mapped_column(String(25), nullable=False)
+    duration_hours: Mapped[int] = mapped_column(Integer, nullable=True, default=0)
+    duration_decimal: Mapped[int] = mapped_column(Integer, nullable=True, default=0)
     done: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
-    # id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    # client = db.Column(db.String(200), nullable=False)  # add index latter
-    # department = db.Column(db.String(200), nullable=False)
-    # project = db.Column(db.String(200), nullable=False)
-    # activity = db.Column(db.String(200), nullable=False)
-    # task = db.Column(db.String(200), nullable=False)
-    # done = db.Column(db.Boolean, default=False)
-    # tags = db.Column(db.String(200), nullable=False)
-    # bill_rate = db.Column(db.Integer, default=0)
-    # bill_frequency = db.Column(db.String(100), nullable=False, default="Hourly")
-    # bill_total = db.Column(db.Integer, default=0)
-    # employee = db.Column(db.String(100), nullable=False, default="Bob Jones", index=True)
-    # group = db.Column(db.String(100), nullable=False, default="Accounting")
-    # role = db.Column(db.String(100), nullable=False, default="Bookkeeper")
-    # pay_type = db.Column(db.String(100), nullable=False, default="Regular")
-    # created_Date = db.Column(db.Date, nullable=False, default=date.today)
-    # start_Date = db.Column(db.Date, nullable=False)
-    # start_Time = db.Column(db.Time, nullable=False, default=time(0, 0))
-    # end_Date = db.Column(db.Date, nullable=False)
-    # end_Time = db.Column(db.Time, nullable=False, default=time(23, 59))
-    # duration_hours = db.Column(db.Time, nullable=False, default=time(23, 59))
-    # duration_decimal = db.Column(db.Numeric(4, 2), nullable=False, default=23.98)
 
     def __repr__(self):
         return f'<task {self.task}>'
@@ -53,8 +49,11 @@ with app.app_context():
 
 @app.route('/')
 def index():
+    today = datetime.now().strftime('%Y-%m-%d')
+    current_time = datetime.now().strftime('%H:%M')
     tasks = Task.query.all()
-    return render_template('index.html', tasks=tasks)
+    print(current_time)
+    return render_template('index.html', tasks=tasks, today=today, time=current_time)
 
 
 @app.route('/add', methods=['POST'])
@@ -66,8 +65,11 @@ def add_task():
     billable_boolean = False
     if billable_data == 'on':
         billable_boolean = True
+    start_date_data = str(request.form.get('start_date'))
+    start_time_data = str(request.form.get('start_time'))
+    end_time_data = str(request.form.get('end_time'))
     if task_data:
-        new_task = Task(client=client_data, project=project_data, task=task_data, billable=billable_boolean, done=False)
+        new_task = Task(client=client_data, project=project_data, task=task_data, billable=billable_boolean, start_date=start_date_data, start_time=start_time_data, end_time=end_time_data, done=False)
         db.session.add(new_task)
         db.session.commit()
     return redirect(url_for('index'))

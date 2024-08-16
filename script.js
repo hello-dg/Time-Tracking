@@ -1,6 +1,8 @@
-$(document).ready(function() {
-    $("input[name='billable']").bootstrapSwitch({
-        onText: 'Yes',
-        offText: 'No'
-    });
+// datepicker-init.js
+$(document).ready(function(){
+  $('#datepicker').datepicker({
+    format: 'mm/dd/yyyy',
+    todayBtn: 'linked',
+    autoclose: true
+  });
 });
