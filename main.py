@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy import Integer, String, Boolean
 from datetime import date, time
 
 app = Flask(__name__)
@@ -12,13 +14,17 @@ db = SQLAlchemy(app)
 
 # will need foreign keys later to link up to an employee db, client db, project db, etc
 class Task(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    client = db.Column(db.String(200), nullable=False)  # add index latter
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    client: Mapped[str] = mapped_column(String(250), nullable=False)
+    task: Mapped[str] = mapped_column(String(250), nullable=False)
+    done: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
+    # id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    # client = db.Column(db.String(200), nullable=False)  # add index latter
     # department = db.Column(db.String(200), nullable=False)
     # project = db.Column(db.String(200), nullable=False)
     # activity = db.Column(db.String(200), nullable=False)
-    task = db.Column(db.String(200), nullable=False)
-    done = db.Column(db.Boolean, default=False)
+    # task = db.Column(db.String(200), nullable=False)
+    # done = db.Column(db.Boolean, default=False)
     # tags = db.Column(db.String(200), nullable=False)
     # billable = db.Column(db.Boolean, default=False)
     # bill_rate = db.Column(db.Integer, default=0)
