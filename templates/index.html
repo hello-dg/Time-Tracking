@@ -14,10 +14,18 @@
         <form class="row g-3" method="POST" action="{{ url_for('add_task') }}">
             <div class="col-4">
                 <select class="form-select" aria-label="Client Select" id="client" name="client" required>
-                    <option selected>Open this select menu</option>
+                    <option selected>Select Client</option>
                     <option value="Marvel Entertainment">Marvel Entertainment</option>
                     <option value="Reynolds, Ryan & Blake">Reynolds, Ryan & Blake</option>
                     <option value="Wilson, Wade">Wilson, Wade</option>
+                </select>
+            </div>
+            <div class="col-4">
+                <select class="form-select" aria-label="Client Select" id="project" name="project" required>
+                    <option selected>Select Project</option>
+                    <option value="Administrative">Administrative</option>
+                    <option value="Bookkeeping">Bookkeeping</option>
+                    <option value="Tax Preparation">Tax Preparation</option>
                 </select>
             </div>
             <div class="col-6">
@@ -29,9 +37,6 @@
             </div>
             <div class="col-2">
                 <button class="btn btn-primary" type="submit">Add</button>
-            </div>
-            <div class="div">
-                <input type="text" class="form-control" placeholder="New Project" name="project" required>
             </div>
         </form>
     </div>
