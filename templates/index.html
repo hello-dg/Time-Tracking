@@ -70,25 +70,34 @@
 <!--TIME HISTORY-->
     <div class="container border mt-4">
         <ul class="list-group">
-            {% for task in tasks %}
-                <li class="list-group-item">
-                    <div class="row align-items-center">
-                        <div class="border col-3">{{ task.project }}</div>
-                        <div class="border col-3 text-primary">{{ task.client }}</div>
-                        <div class="border col-6 bg-light justify-content-end">{{ task.tags }}</div>
-                    </div>
-                    <div class="row d-flex align-items-center">
-                        <div class="border col-3">{{ task.task }}</div>
-                        <div class="border col-auto">{{ task.billable }}</div>
-                        <div class="border col-auto">{{ task.start_date }}</div>
-                        <div class="border col-auto">{{ task.start_time }}</div>
-                        <div class="border col-auto">{{ task.start_time }}</div>
-                        <div class="border col-auto">
-                            <a href="{{ url_for('delete_task', task_id=task.id) }}" class="btn btn-danger btn-sm">Delete</a>
+            <li class="list-group-item bg-light">
+                <div class="border row flex-fill mb-1">
+                    <div class="div">Previous Entries</div>
+                </div>
+                {% for task in tasks %}
+                    <div class="row bg-white">
+                        <div class="row align-items-center mt-2">
+                            <div class="border col-3">{{ task.project }}</div>
+                            <div class="border col-3 text-primary">{{ task.client }}</div>
+                            <div class="border col-6">
+                                <div class="d-inline-block border rounded p-1" style="font-size: 12px;">{{ task.tags }}</div>
+                            </div>
+                        </div>
+                        <div class="row d-flex align-items-center">
+                            <div class="border col-3">{{ task.task }}</div>
+                            <div class="border col-auto">{{ task.billable }}</div>
+                            <div class="border col-auto">{{ task.start_date }}</div>
+                            <div class="border col-auto">{{ task.start_time }}</div>
+                            <div class="border col-auto">{{ task.start_time }}</div>
+                            <div class="border col-auto">
+                                <a href="{{ url_for('delete_task', task_id=task.id) }}" class="btn btn-danger btn-sm">Delete</a>
+                            </div>
                         </div>
                     </div>
-                </li>
-            {% endfor %}
+
+                {% endfor %}
+            </li>
+
         </ul>
     </div>
 
