@@ -20,10 +20,10 @@ class Task(db.Model):
     group: Mapped[str] = mapped_column(String(200), nullable=True, default="Accounting")
     role: Mapped[str] = mapped_column(String(200), nullable=True, default="Bookkeeper")
     pay_type: Mapped[str] = mapped_column(String(200), nullable=True, default="Regular")
-    client: Mapped[str] = mapped_column(String(200), nullable=False)
     department: Mapped[str] = mapped_column(String(200), nullable=True, default="Department")
     project: Mapped[str] = mapped_column(String(200), nullable=False)
     activity: Mapped[str] = mapped_column(String(200), nullable=True, default="Activity")
+    client: Mapped[str] = mapped_column(String(200), nullable=False)
     task: Mapped[str] = mapped_column(String(200), nullable=False)
     tags: Mapped[str] = mapped_column(String(200), nullable=True)
     billable: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
@@ -61,6 +61,7 @@ def add_task():
     client_data = request.form.get('client')
     project_data = request.form.get('project')
     task_data = request.form.get('task')
+    tag_data = request.form.get('tags')
     billable_data = request.form.get('billable')
     billable_boolean = False
     if billable_data == 'on':
@@ -68,8 +69,8 @@ def add_task():
     start_date_data = str(request.form.get('start_date'))
     start_time_data = str(request.form.get('start_time'))
     end_time_data = str(request.form.get('end_time'))
-    if task_data:
-        new_task = Task(client=client_data, project=project_data, task=task_data, billable=billable_boolean, start_date=start_date_data, start_time=start_time_data, end_time=end_time_data, done=False)
+    if project_data:
+        new_task = Task(client=client_data, project=project_data, task=task_data, tags=tag_data, billable=billable_boolean, start_date=start_date_data, start_time=start_time_data, end_time=end_time_data, done=False)
         db.session.add(new_task)
         db.session.commit()
     return redirect(url_for('index'))

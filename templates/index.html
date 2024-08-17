@@ -11,7 +11,7 @@
 <!--TIME ENTRY-->
     <div class="container border mt-4">
         <h1>Time Tracker</h1>
-        <form class="row g-3" method="POST" action="{{ url_for('add_task') }}">
+        <form class="row g-3 align-items-center" method="POST" action="{{ url_for('add_task') }}">
             <div class="col-4">
                 <select class="form-select" aria-label="Client Select" id="client" name="client" required>
                     <option selected>Select Client</option>
@@ -21,28 +21,45 @@
                 </select>
             </div>
             <div class="col-4">
-                <select class="form-select" aria-label="Client Select" id="project" name="project" required>
+                <select class="form-select" aria-label="Client Select" id="project" name="project">
                     <option selected>Select Project</option>
                     <option value="Administrative">Administrative</option>
-                    <option value="Bookkeeping">Bookkeeping</option>
+                    <option value="Monthly Bookkeeping">Monthly Bookkeeping</option>
                     <option value="Tax Preparation">Tax Preparation</option>
                 </select>
             </div>
-            <div class="col-6">
-                <input type="text" class="form-control" placeholder="New Task" name="task" required>
+            <div class="col-4">
+                <select class="form-select" aria-label="Client Select" id="activity" name="activity" required>
+                    <option selected>Select Activity</option>
+                    <option value="2024 Transactions">2024 Transactions</option>
+                    <option value="Tax Entries">Tax Entries</option>
+                    <option value="Filing">Filing</option>
+                </select>
             </div>
-            <div class="form-check form-switch col-2">
+            <div class="col-4">
+                <select class="form-select" aria-label="Client Select" id="tags" name="tags" required>
+                    <option selected>Select Tags</option>
+                    <option value="January Transactions">January Transactions</option>
+                    <option value="February Transactions">February Transactions</option>
+                    <option value="March Transactions">March Transactions</option>
+                </select>
+            </div>
+            <div class="col-2 form-check form-switch border d-flex">
+                &nbsp&nbsp
                 <input class="form-check-input" type="checkbox" role="switch" id="billable" name="billable">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Billable</label>
-            </div>
-            <div class="col-2">
-                <input type="date" class="form-control" id="start_date" name="start_date" value="{{ today }}" required>
+                <label class="form-check-label">&nbspBillable</label>
             </div>
             <div class="col-2">
                 <input type="time" class="form-control" id="start_time" name="start_time" value="{{ time }}" required>
             </div>
                         <div class="col-2">
                 <input type="time" class="form-control" id="end_time" name="end_time" value="{{ time }}" required>
+            </div>
+            <div class="col-2">
+                <input type="date" class="form-control" id="start_date" name="start_date" value="{{ today }}" required>
+            </div>
+            <div class="col-10">
+                <input type="text" class="form-control" placeholder="New Note" name="task">
             </div>
             <div class="col-2">
                 <button class="btn btn-primary" type="submit">Add</button>
@@ -54,16 +71,21 @@
     <div class="container border mt-4">
         <ul class="list-group">
             {% for task in tasks %}
-                <li class="list-group-item d-flex">
-                    <div class="border col-auto" style="text-decoration: {{ 'line-through' if task.done else 'none' }}">{{ task.client }}</div>
-                    <div class="border col-auto" style="text-decoration: {{ 'line-through' if task.done else 'none' }}"> {{ task.project }}</div>
-                    <div class="border col-auto" style="text-decoration: {{ 'line-through' if task.done else 'none' }}">{{ task.task }}</div>
-                    <div class="border col-auto" style="text-decoration: {{ 'line-through' if task.done else 'none' }}">{{ task.billable }}</div>
-                    <div class="border col-auto" style="text-decoration: {{ 'line-through' if task.done else 'none' }}">{{ task.start_date }}</div>
-                    <div class="border col-auto" style="text-decoration: {{ 'line-through' if task.done else 'none' }}">{{ task.start_time }}</div>
-                    <div class="border col-auto" style="text-decoration: {{ 'line-through' if task.done else 'none' }}">{{ task.start_time }}</div>
-                    <div class="border col-auto">
-                        <a href="{{ url_for('delete_task', task_id=task.id) }}" class="btn btn-danger btn-sm">Delete</a>
+                <li class="list-group-item align-items-center">
+                    <div class="row d-flex align-items-center">
+                        <div class="border col-3" style="text-decoration: {{ 'line-through' if task.done else 'none' }}"> {{ task.project }}</div>
+                        <div class="border col-3" style="text-decoration: {{ 'line-through' if task.done else 'none' }}">{{ task.client }}</div>
+                        <div class="border col-6" style="text-decoration: {{ 'line-through' if task.done else 'none' }}">{{ task.tags }}</div>
+                    </div>
+                    <div class="row d-flex align-items-center">
+                        <div class="border col-3" style="text-decoration: {{ 'line-through' if task.done else 'none' }}">{{ task.task }}</div>
+                        <div class="border col-auto" style="text-decoration: {{ 'line-through' if task.done else 'none' }}">{{ task.billable }}</div>
+                        <div class="border col-auto" style="text-decoration: {{ 'line-through' if task.done else 'none' }}">{{ task.start_date }}</div>
+                        <div class="border col-auto" style="text-decoration: {{ 'line-through' if task.done else 'none' }}">{{ task.start_time }}</div>
+                        <div class="border col-auto" style="text-decoration: {{ 'line-through' if task.done else 'none' }}">{{ task.start_time }}</div>
+                        <div class="border col-auto">
+                            <a href="{{ url_for('delete_task', task_id=task.id) }}" class="btn btn-danger btn-sm">Delete</a>
+                        </div>
                     </div>
                 </li>
             {% endfor %}
