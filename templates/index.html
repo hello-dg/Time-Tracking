@@ -71,18 +71,18 @@
     <div class="container border mt-4">
         <ul class="list-group">
             {% for task in tasks %}
-                <li class="list-group-item align-items-center">
-                    <div class="row d-flex align-items-center">
-                        <div class="border col-3" style="text-decoration: {{ 'line-through' if task.done else 'none' }}"> {{ task.project }}</div>
-                        <div class="border col-3" style="text-decoration: {{ 'line-through' if task.done else 'none' }}">{{ task.client }}</div>
-                        <div class="border col-6" style="text-decoration: {{ 'line-through' if task.done else 'none' }}">{{ task.tags }}</div>
+                <li class="list-group-item">
+                    <div class="row align-items-center">
+                        <div class="border col-3">{{ task.project }}</div>
+                        <div class="border col-3 text-primary">{{ task.client }}</div>
+                        <div class="border col-6 bg-light justify-content-end">{{ task.tags }}</div>
                     </div>
                     <div class="row d-flex align-items-center">
-                        <div class="border col-3" style="text-decoration: {{ 'line-through' if task.done else 'none' }}">{{ task.task }}</div>
-                        <div class="border col-auto" style="text-decoration: {{ 'line-through' if task.done else 'none' }}">{{ task.billable }}</div>
-                        <div class="border col-auto" style="text-decoration: {{ 'line-through' if task.done else 'none' }}">{{ task.start_date }}</div>
-                        <div class="border col-auto" style="text-decoration: {{ 'line-through' if task.done else 'none' }}">{{ task.start_time }}</div>
-                        <div class="border col-auto" style="text-decoration: {{ 'line-through' if task.done else 'none' }}">{{ task.start_time }}</div>
+                        <div class="border col-3">{{ task.task }}</div>
+                        <div class="border col-auto">{{ task.billable }}</div>
+                        <div class="border col-auto">{{ task.start_date }}</div>
+                        <div class="border col-auto">{{ task.start_time }}</div>
+                        <div class="border col-auto">{{ task.start_time }}</div>
                         <div class="border col-auto">
                             <a href="{{ url_for('delete_task', task_id=task.id) }}" class="btn btn-danger btn-sm">Delete</a>
                         </div>
