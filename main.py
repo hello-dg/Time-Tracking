@@ -51,17 +51,18 @@ with app.app_context():
 def index():
     today = datetime.now().strftime('%Y-%m-%d')
     current_time = datetime.now().strftime('%H:%M')
+    tags_data = request.form.get('tags')
     tasks = Task.query.all()
-    print(current_time)
-    return render_template('index.html', tasks=tasks, today=today, time=current_time, datetime=datetime, str=str)
+    return render_template('index.html', tasks=tasks, today=today, time=current_time, tags=tags_data, datetime=datetime, str=str)
 
 
 @app.route('/add', methods=['POST'])
 def add_task():
     client_data = request.form.get('client')
     project_data = request.form.get('project')
+    activity_data = request.form.get('activity')
     task_data = request.form.get('task')
-    tag_data = request.form.get('tags')
+    tag_data = ','.join(request.form.getlist('tags'))
     billable_data = request.form.get('billable')
     billable_boolean = False
     if billable_data == 'on':
@@ -79,7 +80,7 @@ def add_task():
     # end_time_data = str(convert_end_time)
 
     if project_data:
-        new_task = Task(client=client_data, project=project_data, task=task_data, tags=tag_data, billable=billable_boolean, start_date=start_date_data, start_time=start_time_data, end_time=end_time_data, done=False)
+        new_task = Task(client=client_data, project=project_data, activity=activity_data, task=task_data, tags=tag_data, billable=billable_boolean, start_date=start_date_data, start_time=start_time_data, end_time=end_time_data, done=False)
         db.session.add(new_task)
         db.session.commit()
     return redirect(url_for('index'))

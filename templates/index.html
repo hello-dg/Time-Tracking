@@ -10,8 +10,10 @@
 
 <!--TIME ENTRY-->
     <div class="container mt-4">
-        <h1>Time Tracker</h1>
-        <form class="row g-3 align-items-center" method="POST" action="{{ url_for('add_task') }}">
+        <h1 class="fw-bold">Time Tracker</h1>
+
+<!--ADD TASK-->
+        <form class="row g-3 mt-2 align-items-center" method="POST" action="{{ url_for('add_task') }}">
             <div class="col-4">
                 <select class="form-select" aria-label="Client Select" id="client" name="client" required>
                     <option selected>Select Client</option>
@@ -37,14 +39,12 @@
                 </select>
             </div>
             <div class="col-4">
-                <select class="form-select" aria-label="Client Select" id="tags" name="tags" required>
-                    <option selected>Select Tags</option>
-                    <option value="January Transactions">January Transactions</option>
-                    <option value="February Transactions">February Transactions</option>
-                    <option value="March Transactions">March Transactions</option>
+                <label class="form-check-label">&nbsp&nbsp&nbspSelect Tags <em>(Hold CTRL to Select Multiple)</em></label>
+                <select class="form-select" size="1" multiple aria-label="Multiple Tag Select" id="tags" name="tags">
+                    <!--JAVASCRIPT TO HANDLE TAG OPTIONS-->
                 </select>
             </div>
-            <div class="col-2 form-check form-switch d-flex">
+            <div class="col-2 form-check form-switch d-flex justify-content-center">
                 &nbsp&nbsp
                 <input class="form-check-input" type="checkbox" role="switch" id="billable" name="billable">
                 <label class="form-check-label">&nbspBillable</label>
@@ -77,7 +77,8 @@
                 {% for task in tasks %}
                     <div class="row border rounded bg-white mb-2 pb-2">
                         <div class="row align-items-center mt-2">
-                            <div class="col-6 fw-bold border-end">{{ task.project }}</div>
+                            <div class="col-3 fw-bold border-end">{{ task.project }}</div>
+                            <div class="col-3">{{ task.activity }}</div>
                             {% if task.billable %}
                                 <div class="col-1 fw-bold fs-5 text-success text-center">$</div>
                             {% else %}
@@ -89,7 +90,11 @@
                         <div class="row d-flex align-items-center mt-1">
                             <div class="col-3 text-primary">{{ task.client }}</div>
                             <div class="col-8 text-end">
-                                <div class="d-inline-block rounded bg-info p-1" style="font-size: 14px;"> {{ task.tags }}</div>
+                                {% if task.tags != "" %}
+                                    {% for tags in task.tags.split(',') %}
+                                        <div class="d-inline-block rounded bg-info p-1" style="font-size: 14px;">{{ tags }}</div>
+                                    {% endfor %}
+                                {% endif %}
                             </div>
                             <div class="border-start border-end col-1 text-center">
                                 <a href="{{ url_for('delete_task', task_id=task.id) }}" class="btn btn-danger btn-sm" style="font-size: 10px;">X</a>
@@ -106,7 +111,7 @@
 
 
 
-
+<script src="static\script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
