@@ -53,7 +53,7 @@ def index():
     current_time = datetime.now().strftime('%H:%M')
     tasks = Task.query.all()
     print(current_time)
-    return render_template('index.html', tasks=tasks, today=today, time=current_time)
+    return render_template('index.html', tasks=tasks, today=today, time=current_time, datetime=datetime, str=str)
 
 
 @app.route('/add', methods=['POST'])
@@ -66,9 +66,18 @@ def add_task():
     billable_boolean = False
     if billable_data == 'on':
         billable_boolean = True
-    start_date_data = str(request.form.get('start_date'))
+    start_date_data = request.form.get('start_date')
+
     start_time_data = str(request.form.get('start_time'))
+    # datetime_start_time = datetime.strptime(stored_start_time, "%H:%M")
+    # convert_start_time = datetime_start_time.strftime("%I:%M %p")
+    # start_time_data = str(convert_start_time)
+
     end_time_data = str(request.form.get('end_time'))
+    # datetime_end_time = datetime.strptime(stored_end_time, "%H:%M")
+    # convert_end_time = datetime_end_time.strftime("%I:%M %p")
+    # end_time_data = str(convert_end_time)
+
     if project_data:
         new_task = Task(client=client_data, project=project_data, task=task_data, tags=tag_data, billable=billable_boolean, start_date=start_date_data, start_time=start_time_data, end_time=end_time_data, done=False)
         db.session.add(new_task)

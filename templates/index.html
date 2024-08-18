@@ -44,7 +44,7 @@
                     <option value="March Transactions">March Transactions</option>
                 </select>
             </div>
-            <div class="col-2 form-check form-switch border d-flex">
+            <div class="col-2 form-check form-switch d-flex">
                 &nbsp&nbsp
                 <input class="form-check-input" type="checkbox" role="switch" id="billable" name="billable">
                 <label class="form-check-label">&nbspBillable</label>
@@ -83,16 +83,16 @@
                             {% else %}
                                 <div class="col-1"></div>
                             {% endif %}
-                            <div class="border-start col-2 text-muted text-center">{{ task.start_date }}</div>
-                            <div class="border-start col-2 text-muted text-center">{{ task.start_time }} - {{ task.end_time }}</div>
-                            <div class="border-start border-end col-1 text-center">
-                                <a href="{{ url_for('delete_task', task_id=task.id) }}" class="btn btn-danger btn-sm" style="font-size: 10px;">X</a>
-                            </div>
+                            <div class="col-2 border-start text-muted fw-bold text-center">{{ datetime.strptime(task.start_date, "%Y-%m-%d").strftime("%m/%d/%Y") }}</div>
+                            <div class="col-3 border-start border-end text-muted fw-bold text-center">{{ str(datetime.strptime(task.start_time, "%H:%M").strftime("%I:%M %p")) }} - {{ str(datetime.strptime(task.end_time, "%H:%M").strftime("%I:%M %p")) }}</div>
                         </div>
                         <div class="row d-flex align-items-center mt-1">
                             <div class="col-3 text-primary">{{ task.client }}</div>
-                            <div class="col-9 text-end">
+                            <div class="col-8 text-end">
                                 <div class="d-inline-block rounded bg-info p-1" style="font-size: 14px;"> {{ task.tags }}</div>
+                            </div>
+                            <div class="border-start border-end col-1 text-center">
+                                <a href="{{ url_for('delete_task', task_id=task.id) }}" class="btn btn-danger btn-sm" style="font-size: 10px;">X</a>
                             </div>
                         </div>
                         <div class="fst-italic" style="font-size: 12px;">{{ task.task }}</div>
