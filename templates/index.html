@@ -13,7 +13,7 @@
         <h1 class="fw-bold">Time Tracker</h1>
 
 <!--ADD TASK-->
-        <form class="row g-3 mt-2 align-items-center" method="POST" action="{{ url_for('add_task') }}">
+        <form class="row g-3 mt-2 align-items-center" method="POST" action="{{ url_for('add_task') }}" id="time-entry-form">
             <div class="col-4">
                 <select class="form-select" aria-label="Client Select" id="client" name="client" required>
                     <option selected>Select Client</option>
@@ -30,7 +30,7 @@
                     <option value="Tax Preparation">Tax Preparation</option>
                 </select>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <select class="form-select" aria-label="Client Select" id="activity" name="activity" required>
                     <option selected>Select Activity</option>
                     <option value="2024 Transactions">2024 Transactions</option>
@@ -38,12 +38,34 @@
                     <option value="Filing">Filing</option>
                 </select>
             </div>
-            <div class="col-4">
-                <label class="form-check-label">&nbsp&nbsp&nbspSelect Tags <em>(Hold CTRL to Select Multiple)</em></label>
-                <select class="form-select" size="1" multiple aria-label="Multiple Tag Select" id="tags" name="tags">
-                    <!--JAVASCRIPT TO HANDLE TAG OPTIONS-->
-                </select>
+
+<!--            <div class="col-4">-->
+<!--                <label class="form-check-label">&nbsp&nbsp&nbspSelect Tags <em>(Hold CTRL to Select Multiple)</em></label>-->
+<!--                <select class="form-select" size="1" multiple aria-label="Multiple Tag Select" id="tags" name="tags[]">-->
+<!--                    &lt;!&ndash;JAVASCRIPT TO HANDLE TAG OPTIONS&ndash;&gt;-->
+<!--                </select>-->
+<!--            </div>-->
+
+            <div class="form-group col-1 text-center" id="tagSelector" style="display: none;">
+                <div class="dropdown">
+                    <img src="{{ url_for('static', filename='icons/tag_icon_64.png') }}"
+                         class="dropdown-toggle"
+                         style="width: 36px; height: 36px; cursor: pointer;"
+                         aria-label="Tag Select"
+                         id="tagDropdown"
+                         data-bs-toggle="dropdown"
+                         aria-expanded="false">
+
+                    <div class="dropdown-menu form-check" aria-labelledby="tagDropdown" id="tagChecks">
+                        <!--JAVASCRIPT TO HANDLE TAG OPTIONS-->
+                    </div>
+
+                </div>
+                <div id="tagRequiredError" class="text-danger" style="display: none;">Please select at least one tag.</div>
             </div>
+
+
+
             <div class="col-2 form-check form-switch d-flex justify-content-center">
                 &nbsp&nbsp
                 <input class="form-check-input" type="checkbox" role="switch" id="billable" name="billable">
@@ -62,7 +84,7 @@
                 <input type="text" class="form-control" placeholder="New Note" name="task">
             </div>
             <div class="col-2">
-                <button class="btn btn-primary w-100" type="submit">Add Entry</button>
+                <button class="btn btn-primary w-100" type="submit" id="submit">Add Entry</button>
             </div>
         </form>
     </div>
@@ -111,7 +133,7 @@
 
 
 
-<script src="static\script.js"></script>
+<script src="static\js\script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
