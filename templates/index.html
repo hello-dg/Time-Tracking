@@ -9,7 +9,7 @@
 <body>
 
 <!--TIME ENTRY-->
-    <div class="container border mt-4">
+    <div class="container mt-4">
         <h1>Time Tracker</h1>
         <form class="row g-3 align-items-center" method="POST" action="{{ url_for('add_task') }}">
             <div class="col-4">
@@ -68,31 +68,34 @@
     </div>
 
 <!--TIME HISTORY-->
-    <div class="container border mt-4">
+    <div class="container mt-4">
         <ul class="list-group">
             <li class="list-group-item bg-light">
-                <div class="border row flex-fill mb-1">
-                    <div class="div">Previous Entries</div>
+                <div class="row flex-fill mb-1">
+                    <div class="fw-bold fs-5">Previous Entries</div>
                 </div>
                 {% for task in tasks %}
-                    <div class="row bg-white">
+                    <div class="row border rounded bg-white mb-2 pb-2">
                         <div class="row align-items-center mt-2">
-                            <div class="border col-3">{{ task.project }}</div>
-                            <div class="border col-3 text-primary">{{ task.client }}</div>
-                            <div class="border col-6">
-                                <div class="d-inline-block border rounded p-1" style="font-size: 12px;">{{ task.tags }}</div>
+                            <div class="col-6 fw-bold border-end">{{ task.project }}</div>
+                            {% if task.billable %}
+                                <div class="col-1 fw-bold fs-5 text-success text-center">$</div>
+                            {% else %}
+                                <div class="col-1"></div>
+                            {% endif %}
+                            <div class="border-start col-2 text-muted text-center">{{ task.start_date }}</div>
+                            <div class="border-start col-2 text-muted text-center">{{ task.start_time }} - {{ task.end_time }}</div>
+                            <div class="border-start border-end col-1 text-center">
+                                <a href="{{ url_for('delete_task', task_id=task.id) }}" class="btn btn-danger btn-sm" style="font-size: 10px;">X</a>
                             </div>
                         </div>
-                        <div class="row d-flex align-items-center">
-                            <div class="border col-3">{{ task.task }}</div>
-                            <div class="border col-auto">{{ task.billable }}</div>
-                            <div class="border col-auto">{{ task.start_date }}</div>
-                            <div class="border col-auto">{{ task.start_time }}</div>
-                            <div class="border col-auto">{{ task.start_time }}</div>
-                            <div class="border col-auto">
-                                <a href="{{ url_for('delete_task', task_id=task.id) }}" class="btn btn-danger btn-sm">Delete</a>
+                        <div class="row d-flex align-items-center mt-1">
+                            <div class="col-3 text-primary">{{ task.client }}</div>
+                            <div class="col-9 text-end">
+                                <div class="d-inline-block rounded bg-info p-1" style="font-size: 14px;"> {{ task.tags }}</div>
                             </div>
                         </div>
+                        <div class="fst-italic" style="font-size: 12px;">{{ task.task }}</div>
                     </div>
 
                 {% endfor %}
