@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, String, Boolean
@@ -6,12 +6,17 @@ from sqlite3 import Date
 from datetime import date, time, datetime
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tasks.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
+# Lists for testing Client, Project, and Activity dropdown
+Client_List = ["No Client", "Multiple Clients", "Marvel Entertainment", "Reynolds, Ryan & Blake", "Wilson, Wade"]
+Project_List = ["Tax Preparation", "Monthly Bookkeeping", "Administrative"]
+Activity_List = ["Tax Entries", "2024 Transactions", "Filing"]
 
 # will need foreign keys later to link up to an employee db, client db, project db, etc
 class Task(db.Model):
@@ -23,7 +28,7 @@ class Task(db.Model):
     department: Mapped[str] = mapped_column(String(200), nullable=True, default="Department")
     project: Mapped[str] = mapped_column(String(200), nullable=False)
     activity: Mapped[str] = mapped_column(String(200), nullable=True, default="Activity")
-    client: Mapped[str] = mapped_column(String(200), nullable=False)
+    client: Mapped[str] = mapped_column(String(200), nullable=True)
     task: Mapped[str] = mapped_column(String(200), nullable=False)
     tags: Mapped[str] = mapped_column(String(200), nullable=True)
     billable: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
@@ -53,10 +58,10 @@ def index():
     current_time = datetime.now().strftime('%H:%M')
     tags_data = request.form.get('tags')
     tasks = Task.query.all()
-    return render_template('index.html', tasks=tasks, today=today, time=current_time, tags=tags_data, datetime=datetime, str=str)
+    return render_template('index.html', clients=Client_List, projects=Project_List, activities=Activity_List, tasks=tasks, today=today, time=current_time, tags=tags_data, datetime=datetime, str=str)
 
 
-@app.route('/add', methods=['POST'])
+@app.route('/add', methods=['GET', 'POST'])
 def add_task():
     client_data = request.form.get('client')
     project_data = request.form.get('project')
@@ -69,7 +74,13 @@ def add_task():
     start_time_data = str(request.form.get('start_time'))
     end_time_data = str(request.form.get('end_time'))
 
-    if project_data:
+    if not client_data:
+        flash("A client is required. Please try again.", "warning")
+    elif not project_data:
+        flash("A project is required. Please try again.", "warning")
+    elif not activity_data:
+        flash("An activity is required. Please try again.", "warning")
+    else:
         new_task = Task(client=client_data,
                         project=project_data,
                         activity=activity_data,

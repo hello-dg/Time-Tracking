@@ -13,44 +13,52 @@
         <h1 class="fw-bold">Time Tracker</h1>
 
 <!--ADD TASK-->
-        <form class="row g-3 mt-2 align-items-center" method="POST" action="{{ url_for('add_task') }}" id="time-entry-form">
+        <form class="row g-3 align-items-center" method="POST" action="{{ url_for('add_task') }}" id="time-entry-form">
+            <div class="col-12">
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show d-flex align-items-center" role="alert">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-circle-fill flex-shrink-0 me-2" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
+                            </svg>
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            </div>
             <div class="col-4">
                 <select class="form-select" aria-label="Client Select" id="client" name="client" required>
-                    <option selected>Select Client</option>
-                    <option value="Marvel Entertainment">Marvel Entertainment</option>
-                    <option value="Reynolds, Ryan & Blake">Reynolds, Ryan & Blake</option>
-                    <option value="Wilson, Wade">Wilson, Wade</option>
+                    <option disabled selected value="Select Client">Select Client</option>
+                    {% for client in clients %}
+                        <option value="{{ client }}">{{ client }}</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="col-4">
                 <select class="form-select" aria-label="Client Select" id="project" name="project">
-                    <option selected>Select Project</option>
-                    <option value="Administrative">Administrative</option>
-                    <option value="Monthly Bookkeeping">Monthly Bookkeeping</option>
-                    <option value="Tax Preparation">Tax Preparation</option>
+                    <option disabled selected>Select Project</option>
+                    {% for project in projects %}
+                        <option value="{{ project }}">{{ project }}</option>
+                    {% endfor %}
                 </select>
             </div>
             <div class="col-3">
                 <select class="form-select" aria-label="Client Select" id="activity" name="activity" required>
-                    <option selected>Select Activity</option>
-                    <option value="2024 Transactions">2024 Transactions</option>
-                    <option value="Tax Entries">Tax Entries</option>
-                    <option value="Filing">Filing</option>
+                    <option disabled selected>Select Activity</option>
+                    {% for activity in activities %}
+                        <option value="{{ activity }}">{{ activity }}</option>
+                    {% endfor %}
                 </select>
             </div>
 
-<!--            <div class="col-4">-->
-<!--                <label class="form-check-label">&nbsp&nbsp&nbspSelect Tags <em>(Hold CTRL to Select Multiple)</em></label>-->
-<!--                <select class="form-select" size="1" multiple aria-label="Multiple Tag Select" id="tags" name="tags[]">-->
-<!--                    &lt;!&ndash;JAVASCRIPT TO HANDLE TAG OPTIONS&ndash;&gt;-->
-<!--                </select>-->
-<!--            </div>-->
-
             <div class="form-group col-1 text-center" id="tagSelector" style="display: none;">
                 <div class="dropdown">
-                    <img src="{{ url_for('static', filename='icons/tag_icon_64.png') }}"
+                    <img src="{{ url_for('static', filename='icons/tag_not_selected_64.png') }}"
                          class="dropdown-toggle"
-                         style="width: 36px; height: 36px; cursor: pointer;"
+                         style="width: 32px; height: 32px; cursor: pointer;"
                          aria-label="Tag Select"
                          id="tagDropdown"
                          data-bs-toggle="dropdown"
