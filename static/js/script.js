@@ -35,13 +35,13 @@ document.addEventListener('DOMContentLoaded', function () {
     projectSelect.addEventListener('change', function () {
         clearTags();
 
-        if (projectSelect.value === "2024 Transactions") {
+        if (projectSelect.value === "Monthly Bookkeeping") {
             populateMonths();
         }
     });
 
     // Initial check in case the page is loaded with a project already selected
-    if (projectSelect.value === "2024 Transactions") {
+    if (projectSelect.value === "Monthly Bookkeeping") {
         populateMonths();
     } else {
         clearTags();
