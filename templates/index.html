@@ -30,7 +30,7 @@
             {% endwith %}
             </div>
 
-            <div class="col-3">
+            <div class="col-4">
                 <select class="form-select" aria-label="Client Select" id="client" name="client" required>
                     <option disabled selected value="Select Client">Select Client</option>
                     {% for client in clients %}
@@ -54,7 +54,7 @@
                     {% endfor %}
                 </select>
             </div>
-            <div class="container mt-3 col-1 d-flex justify-content-around">
+            <div class="container mt-3 col-2 d-flex justify-content-center align-items-center">
                 <div class="form-group text-center" id="tagSelector" style="display: none;">
                     <div class="dropdown">
                         <img src="{{ url_for('static', filename='icons/tag_not_selected_64.png') }}"
@@ -72,24 +72,22 @@
                     <div id="tagRequiredError" class="text-danger" style="display: none;">Please select at least one tag.</div>
                 </div>
 
-
-                <div class="form-check form-switch d-flex justify-content-center">
+                <div class="form-check form-switch">
                     &nbsp&nbsp&nbsp
 <!--                    <input class="form-check-input fs-5" type="checkbox" role="switch" id="billable" name="billable">-->
 <!--                    <label class="form-check-label fs-5">&nbsp$</label>-->
                     <input type="checkbox" class="btn-check" name="billable" id="billable" autocomplete="off">
-                    <label class="btn btn-outline-success" for="billable">$</label>
+                    <label class="btn btn-outline-success bold" for="billable">$$</label>
                 </div>
-            </div>
-
-            <div class="col-3">
-                <input type="time" class="form-control" id="start_time" name="start_time" value="{{ time }}" required>
-            </div>
-                        <div class="col-2">
-                <input type="time" class="form-control" id="end_time" name="end_time" value="{{ time }}" required>
             </div>
             <div class="col-2">
                 <input type="date" class="form-control" id="start_date" name="start_date" value="{{ today }}" required>
+            </div>
+            <div class="col-2">
+                <input type="time" class="form-control" id="start_time" name="start_time" value="{{ time }}" required>
+            </div>
+            <div class="col-2">
+                <input type="time" class="form-control" id="end_time" name="end_time" value="{{ time }}" required>
             </div>
             <div class="col-10">
                 <input type="text" class="form-control" placeholder="New Note" name="task">
