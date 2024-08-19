@@ -13,7 +13,7 @@
         <h1 class="fw-bold">Time Tracker</h1>
 
 <!--ADD TASK-->
-        <form class="row g-3 align-items-center border" method="POST" action="{{ url_for('add_task') }}" id="time-entry-form">
+        <form class="row g-3 align-items-center justify-content-end" method="POST" action="{{ url_for('add_task') }}" id="time-entry-form">
             <div class="col-12">
             {% with messages = get_flashed_messages(with_categories=True) %}
                 {% if messages %}
@@ -80,6 +80,10 @@
                     <label class="btn btn-outline-success bold" for="billable">$$</label>
                 </div>
             </div>
+
+            <div class="col-6">
+                <input type="text" class="form-control" placeholder="New Note" name="task">
+            </div>
             <div class="col-2">
                 <input type="date" class="form-control" id="start_date" name="start_date" value="{{ today }}" required>
             </div>
@@ -89,9 +93,7 @@
             <div class="col-2">
                 <input type="time" class="form-control" id="end_time" name="end_time" value="{{ time }}" required>
             </div>
-            <div class="col-10">
-                <input type="text" class="form-control" placeholder="New Note" name="task">
-            </div>
+
             <div class="col-2">
                 <button class="btn btn-primary w-100" type="submit" id="submit">Add Entry</button>
             </div>
@@ -111,9 +113,9 @@
                             <div class="col-3 fw-bold border-end">{{ task.project }}</div>
                             <div class="col-3">{{ task.activity }}</div>
                             {% if task.billable %}
-                                <div class="col-1 fw-bold fs-5 text-success text-center">$</div>
+                                <div class="col-1 fw-bold fs-5 text-success text-center border-start">$</div>
                             {% else %}
-                                <div class="col-1"></div>
+                                <div class="col-1 border-start">&nbsp</div>
                             {% endif %}
                             <div class="col-2 border-start text-muted fw-bold text-center">{{ datetime.strptime(task.start_date, "%Y-%m-%d").strftime("%m/%d/%Y") }}</div>
                             <div class="col-3 border-start border-end text-muted fw-bold text-center">{{ str(datetime.strptime(task.start_time, "%H:%M").strftime("%I:%M %p")) }} - {{ str(datetime.strptime(task.end_time, "%H:%M").strftime("%I:%M %p")) }}</div>
