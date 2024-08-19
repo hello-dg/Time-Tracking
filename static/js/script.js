@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function clearTags() {
         tagList.innerHTML = '';
-        tagSelector.style.display = 'none';
+        tagSelector.style.display = 'block';
         tagRequiredError.style.display = 'none';
     }
 

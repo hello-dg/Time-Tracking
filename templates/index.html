@@ -13,7 +13,7 @@
         <h1 class="fw-bold">Time Tracker</h1>
 
 <!--ADD TASK-->
-        <form class="row g-3 align-items-center" method="POST" action="{{ url_for('add_task') }}" id="time-entry-form">
+        <form class="row g-3 align-items-center border" method="POST" action="{{ url_for('add_task') }}" id="time-entry-form">
             <div class="col-12">
             {% with messages = get_flashed_messages(with_categories=True) %}
                 {% if messages %}
@@ -29,7 +29,8 @@
                 {% endif %}
             {% endwith %}
             </div>
-            <div class="col-4">
+
+            <div class="col-3">
                 <select class="form-select" aria-label="Client Select" id="client" name="client" required>
                     <option disabled selected value="Select Client">Select Client</option>
                     {% for client in clients %}
@@ -37,7 +38,7 @@
                     {% endfor %}
                 </select>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <select class="form-select" aria-label="Client Select" id="project" name="project">
                     <option disabled selected>Select Project</option>
                     {% for project in projects %}
@@ -53,33 +54,35 @@
                     {% endfor %}
                 </select>
             </div>
+            <div class="container mt-3 col-1 d-flex justify-content-around">
+                <div class="form-group text-center" id="tagSelector" style="display: none;">
+                    <div class="dropdown">
+                        <img src="{{ url_for('static', filename='icons/tag_not_selected_64.png') }}"
+                             class="dropdown-toggle"
+                             style="width: 32px; height: 32px; cursor: pointer;"
+                             aria-label="Tag Select"
+                             id="tagDropdown"
+                             data-bs-toggle="dropdown"
+                             aria-expanded="false">
 
-            <div class="form-group col-1 text-center" id="tagSelector" style="display: none;">
-                <div class="dropdown">
-                    <img src="{{ url_for('static', filename='icons/tag_not_selected_64.png') }}"
-                         class="dropdown-toggle"
-                         style="width: 32px; height: 32px; cursor: pointer;"
-                         aria-label="Tag Select"
-                         id="tagDropdown"
-                         data-bs-toggle="dropdown"
-                         aria-expanded="false">
-
-                    <div class="dropdown-menu form-check" aria-labelledby="tagDropdown" id="tagChecks">
-                        <!--JAVASCRIPT TO HANDLE TAG OPTIONS-->
+                        <div class="dropdown-menu form-check" aria-labelledby="tagDropdown" id="tagChecks">
+                            <!--JAVASCRIPT TO HANDLE TAG OPTIONS-->
+                        </div>
                     </div>
-
+                    <div id="tagRequiredError" class="text-danger" style="display: none;">Please select at least one tag.</div>
                 </div>
-                <div id="tagRequiredError" class="text-danger" style="display: none;">Please select at least one tag.</div>
+
+
+                <div class="form-check form-switch d-flex justify-content-center">
+                    &nbsp&nbsp&nbsp
+<!--                    <input class="form-check-input fs-5" type="checkbox" role="switch" id="billable" name="billable">-->
+<!--                    <label class="form-check-label fs-5">&nbsp$</label>-->
+                    <input type="checkbox" class="btn-check" name="billable" id="billable" autocomplete="off">
+                    <label class="btn btn-outline-success" for="billable">$</label>
+                </div>
             </div>
 
-
-
-            <div class="col-2 form-check form-switch d-flex justify-content-center">
-                &nbsp&nbsp
-                <input class="form-check-input" type="checkbox" role="switch" id="billable" name="billable">
-                <label class="form-check-label">&nbspBillable</label>
-            </div>
-            <div class="col-2">
+            <div class="col-3">
                 <input type="time" class="form-control" id="start_time" name="start_time" value="{{ time }}" required>
             </div>
                         <div class="col-2">
