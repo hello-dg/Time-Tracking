@@ -57,7 +57,8 @@ def index():
     today = datetime.now().strftime('%Y-%m-%d')
     current_time = datetime.now().strftime('%H:%M')
     tags_data = request.form.get('tags')
-    tasks = Task.query.all()
+    # tasks = Task.query.all()
+    tasks = Task.query.order_by(Task.start_date.desc(), Task.start_time.desc()).all()
     return render_template('index.html', clients=Client_List, projects=Project_List, activities=Activity_List, tasks=tasks, today=today, time=current_time, tags=tags_data, datetime=datetime, str=str)
 
 
