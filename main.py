@@ -54,12 +54,22 @@ with app.app_context():
 
 @app.route('/')
 def index():
+    # Check if previously selected values
+    selected_client = request.args.get('selected_client')
+    selected_project = request.args.get('selected_project')
+    selected_activity = request.args.get('selected_activity')
+    selected_tags = ''
+    selected_billable = ''
+    selected_task = ''
+    selected_start_date = ''
+    selected_start_time = ''
+    selected_end_time = ''
+
     today = datetime.now().strftime('%Y-%m-%d')
     current_time = datetime.now().strftime('%H:%M')
     tags_data = request.form.get('tags')
-    # tasks = Task.query.all()
     tasks = Task.query.order_by(Task.start_date.desc(), Task.start_time.desc()).all()
-    return render_template('index.html', clients=Client_List, projects=Project_List, activities=Activity_List, tasks=tasks, today=today, time=current_time, tags=tags_data, datetime=datetime, str=str)
+    return render_template('index.html', selected_client=selected_client, selected_project=selected_project, selected_activity=selected_activity, clients=Client_List, projects=Project_List, activities=Activity_List, tasks=tasks, today=today, time=current_time, tags=tags_data, datetime=datetime, str=str)
 
 
 @app.route('/add', methods=['GET', 'POST'])
@@ -77,10 +87,22 @@ def add_task():
 
     if not client_data:
         flash("A client is required. Please try again.", "warning")
+        return redirect(url_for('index', selected_project=project_data, selected_activity=activity_data, selected_task=task_data, selected_tags=tag_data, selected_billable=billable_data, selected_start_date=start_date_data, selected_start_time=start_time_data, selected_end_time=end_time_data))
     elif not project_data:
         flash("A project is required. Please try again.", "warning")
+        return redirect(url_for('index', selected_client=client_data, selected_activity=activity_data, selected_task=task_data, selected_tags=tag_data, selected_billable=billable_data, selected_start_date=start_date_data, selected_start_time=start_time_data, selected_end_time=end_time_data))
     elif not activity_data:
         flash("An activity is required. Please try again.", "warning")
+        return redirect(url_for('index', selected_client=client_data, selected_project=project_data, selected_task=task_data, selected_tags=tag_data, selected_billable=billable_data, selected_start_date=start_date_data, selected_start_time=start_time_data, selected_end_time=end_time_data))
+    elif not start_date_data:
+        return redirect(url_for('index', selected_client=client_data, selected_project=project_data, selected_activity=activity_data, selected_task=task_data, selected_tags=tag_data, selected_billable=billable_data, selected_start_time=start_time_data, selected_end_time=end_time_data))
+    elif not start_time_data:
+        return redirect(url_for('index', selected_client=client_data, selected_project=project_data, selected_activity=activity_data, selected_task=task_data, selected_tags=tag_data, selected_billable=billable_data, selected_start_date=start_date_data, selected_end_time=end_time_data))
+    elif not end_time_data:
+        return redirect(
+            url_for('index', selected_client=client_data, selected_project=project_data, selected_activity=activity_data, selected_task=task_data,
+                    selected_tags=tag_data, selected_billable=billable_data, selected_start_date=start_date_data,
+                    selected_start_time=start_time_data))
     else:
         new_task = Task(client=client_data,
                         project=project_data,
@@ -95,6 +117,7 @@ def add_task():
                         )
         db.session.add(new_task)
         db.session.commit()
+    print(client_data)
     return redirect(url_for('index'))
 
 
