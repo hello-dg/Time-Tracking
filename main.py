@@ -18,6 +18,7 @@ Client_List = ["No Client", "Multiple Clients", "Marvel Entertainment", "Reynold
 Project_List = ["Tax Preparation", "Monthly Bookkeeping", "Administrative"]
 Activity_List = ["Tax Entries", "2024 Transactions", "Filing"]
 
+
 # will need foreign keys later to link up to an employee db, client db, project db, etc
 class Task(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -59,7 +60,7 @@ def index():
     selected_project = request.args.get('selected_project')
     selected_activity = request.args.get('selected_activity')
     selected_tags = ''
-    selected_billable = ''
+    selected_billable = request.args.get('selected_billable')
     selected_task = ''
     selected_start_date = ''
     selected_start_time = ''
@@ -69,7 +70,7 @@ def index():
     current_time = datetime.now().strftime('%H:%M')
     tags_data = request.form.get('tags')
     tasks = Task.query.order_by(Task.start_date.desc(), Task.start_time.desc()).all()
-    return render_template('index.html', selected_client=selected_client, selected_project=selected_project, selected_activity=selected_activity, clients=Client_List, projects=Project_List, activities=Activity_List, tasks=tasks, today=today, time=current_time, tags=tags_data, datetime=datetime, str=str)
+    return render_template('index.html', selected_client=selected_client, selected_project=selected_project, selected_activity=selected_activity, selected_billable=selected_billable, clients=Client_List, projects=Project_List, activities=Activity_List, tasks=tasks, today=today, time=current_time, tags=tags_data, datetime=datetime, str=str)
 
 
 @app.route('/add', methods=['GET', 'POST'])

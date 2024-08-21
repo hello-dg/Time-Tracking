@@ -77,7 +77,7 @@
                     &nbsp&nbsp&nbsp
 <!--                    <input class="form-check-input fs-5" type="checkbox" role="switch" id="billable" name="billable">-->
 <!--                    <label class="form-check-label fs-5">&nbsp$</label>-->
-                    <input type="checkbox" class="btn-check" name="billable" id="billable" autocomplete="off">
+                    <input type="checkbox" class="btn-check" name="billable" id="billable" autocomplete="off" {% if selected_billable == 'on' %} checked {% endif %} >
                     <label class="btn btn-outline-success bold" for="billable">$$</label>
                 </div>
             </div>
